@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+            用new Promise 实例化的promise对象有以下三个状态。
+
+                "has-resolution" - Fulfilled
+                resolve(成功)时。此时会调用 onFulfilled
+
+                "has-rejection" - Rejected
+                reject(失败)时。此时会调用 onRejected
+
+                "unresolved" - Pending
+                既不是resolve也不是reject的状态。也就是promise对象刚被创建后的初始化状态等
+
+            关于上面这三种状态的读法，其中 左侧为在 ES6 Promises 规范中定义的术语， 而右侧则是在 Promises/A+ 中描述状态的术语。
+        
+            
+
+            var promise = new Promise(function(resolve, reject) {
+                // 异步处理
+                // 处理结束后、调用resolve(成功) 或 reject(失败) 
+            });
+
+            promise.then 成功和失败时都可以使用。promise.then(onFulfilled ,onRejected )
+            另外在只想对异常进行处理时可以采用 promise.then(undefined, onRejected) 这种方式，只指定reject时的回调函数即可。 
+            不过这种情况下 promise.catch(onRejected) 应该是个更好的选择。     
+            
+            每次调用then都会返回一个新创建的promise对象
+
+            注意then 和catch 都是微任务 会放在微任务队列中  Promise里的函数 是创建Promise 的时候 就执行的
+            
+            
+        */
+
+        // function fn(){
+        //     console.log(1);
+        // }
+        // new Promise(fn).then(function(){
+        //     console.log(2);
+        // });
+
+        console.log(new Promise(function (a) {
+            console.log(1);//返回的是 Pending 状态的Promise对象  既不会调用then 也不会调用catch
+
+        }));
+        console.log(new Promise(function (a) {
+            a(1);//返回resolve状态的Promise对象 调用then的第一个参数的函数 也就是onFulfilled
+        }));
+        console.log(new Promise(function (resolve, reject) {
+            reject();
+        }));
+
+        function asyncFunction() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve('Async Hello world');
+                }, 1000);
+            });
+        }
+
+        asyncFunction().then(function (value) {
+            console.log(value);    // => 'Async Hello world'
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+       /*  function asyncFunction() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    // resolve('Async Hello world');
+                    reject();
+                }, 1000);
+            });
+        }
+
+        asyncFunction().then(function (value) {
+            console.log(value);    // => 'Async Hello world'
+        },function(){
+            console.log("error");
+        }) */
+
+    </script>
+</body>
+
+</html>

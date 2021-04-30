@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+            匹配字符 无非就是 量词 字符组 分支结构的组合使用
+
+        */
+
+        // 匹配16进制的颜色值  其中字符可以出现 3 或 6 次  
+        let str = ` #ffbbad #Fc01DF #FFF #ffE`;
+        let reg = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})/g;//注意多选分支的顺序 
+                 
+        console.log(str.match(reg));
+        console.log(str.match(/#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})/g));
+            
+        // 匹配时间
+        let time = `23:06`;
+        let time1 = `10:30`;
+        console.log(matchReg(time)(/[0-23]{1,2}:[0-23]{1,2}/));
+        console.log(matchReg(time)(/\d{1,2}:\d{1,2}/));
+        console.log(matchReg(time1)(/\d{1,2}:\d{1,2}/));
+
+        // 柯里化
+        function matchReg(str){
+            return function(reg){
+                return str.match(reg);
+            }
+        }
+    </script>
+</body>
+</html>

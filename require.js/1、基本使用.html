@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="require.js"></script>
+    <script>
+        /* 
+        RequireJS的基本思想是，通过define方法，将代码定义为模块；通过require方法，实现代码的模块加载。
+
+            require:加载模块
+            下面代表 加载了a这个文件 a这个js文件就是一个模块 => 加载a模块   注意数组成员是模块的路径
+            第二个参数是回调函数 当模块加载完毕后 执行   用来完成具体逻辑任务的
+            回调函数的参数一一对应数组的成员(模块)
+        
+        */
+        require(["a"], function (a) {
+            // console.log(b.x + b.y); 
+            console.log(a);
+        });
+    </script>
+</body>
+
+</html>

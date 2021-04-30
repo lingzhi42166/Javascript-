@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const getJSON = function (url) {
+            const promise = new Promise(function (resolve, reject) {//Promise执行
+                const handler = function () {
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+                    if (this.status === 200) {
+                        resolve(this.response);
+                        // resolve(this.responseText);
+                    } else {
+                        reject(new Error(this.statusText));
+                    }
+                };
+                const client = new XMLHttpRequest();
+                client.open("GET", url);
+                client.onreadystatechange = handler;
+                client.responseType = "json";
+                client.setRequestHeader("Accept", "application/json");
+                client.send();
+            });
+
+            return promise;//上面已经执行完Promise 并且根据status 设置了状态 然后把有状态的Promise实例返回给了promise
+            // 将这个存着promise实例的promise返回给getJSON函数 
+        };
+        console.log(getJSON("/posts.json"));//是一个有状态的promise实例对象
+        getJSON("/posts.json").then(function (json) {
+            // JSON.parse(json) 这个是由JSON字符串转换为JSON对象 因为上面是通过 response接收数据的 所以不是字符串形式  responseText这个才是以字符串接收的数据
+            // JSON.stringify(obj); //将JSON对象转化为JSON字符
+            console.log('Contents: ' + JSON.stringify(json));
+            // console.log('Contents: ' + JSON.parse(json))
+            return json.page
+        }, function (error) {
+            console.error('出错了', error);
+        }).then(function(value){
+            console.log(value);//每个 then 方法的 value 的值都是前一个promise对象通过 return 返回的值
+            // console.log('Contents: ' + JSON.stringify(json));
+        });
+
+
+    </script>
+</body>
+
+</html>

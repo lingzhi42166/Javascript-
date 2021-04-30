@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		function LateBloomer() {
+		  this.petalCount = Math.ceil(Math.random() * 12) + 1;
+		}
+
+		// 在 1 秒钟后声明 bloom
+		LateBloomer.prototype.bloom = function() {
+			console.log(this);
+		  	function fn(){
+		  		console.log(this);
+		  	}
+		  	// window.setTimeout(console.log(this), 1000);
+		  	setTimeout(fn(),1000);
+		  	// console.log(fn);
+		  	setTimeout(fn.bind(this),1000);
+		  	// setTimeout(function(){
+		  	// 	console.log(this);
+		  	// },1000)
+		};
+		var demo = new LateBloomer();
+		// console.log(demo.__proto__);
+		demo.bloom();
+
+
+
+	</script>
+</body>
+</html>

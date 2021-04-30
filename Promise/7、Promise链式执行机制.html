@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            Promise的链式调用中的执行机制
+                Promise是微任务 所以其方法放入了微任务队列
+        */
+        // new Promise().then().then()
+        new Promise(function(resolve,reject){//new Promise直接执行
+            console.log("第一个Promise执行了")
+            resolve();
+        }).then(function(){//then放入微任务队列 执行这里的时候 会返回一个新的Promise 也就是 return new Promise() 所以new Promise直接执行
+            console.log("第一个then执行了");
+        }).then(function(){//上面的new Promise执行了以后 这里的then放入微任务队列
+            console.log("第二个then执行了");
+            throw new Error("错误");
+        }).catch(function(value){ 
+            console.log(value);
+        })
+        console.log("hello");
+        setTimeout(function(){
+            console.log("第二次事件循环");
+        },0)
+
+
+
+        new Promise(function(resolve,reject){
+            console.log(1);
+            // resolve(1);
+            reject();
+        }).then(function(value){
+            console.log(value);     
+        },function(){
+            console.log("rejected");
+        }).then(function(value){
+            console.log(value);
+            console.log("resolve");
+            // return ++value
+        },function(value){
+            // console.log(value);
+            console.log("rejected")
+        })
+    
+        // console.log(new Promise(function(){
+        //     console.log(1);
+        // }));
+
+    </script>
+</body>
+</html>

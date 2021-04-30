@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// function fn(){
+		// 	var a = Array.prototype.slice.call(arguments);
+		// 	console.log(a);
+		// }
+		// fn(1,2);
+
+		/*
+			模拟slice(beginSlice,endSlice。)方法  
+			slice方法就是截取数组 提取的新字符串包括beginSlice但不包括 endSlice。 如果省略了endSlice则一直提取到末尾
+			如果都不传参数 则从0至末尾
+			并返回一新的数组
+		*/
+		var arr = [1,2,3,4,5,6];
+		console.log(arr.slice(1,2));
+		console.log(arr.slice());
+
+		Array.prototype.myslice = function(start,end){
+			var arr = new Array();
+			start = start || 0;//如果没有传入参数  则从0开始
+			end = end || this.length;//如果没有传入end参数 则截取到末尾
+
+			for(var i = start; i<end; i++){// i<this.end 不包括end
+				arr.push(this[i]);
+				// console.log(this[i])
+			}
+			return arr;
+		}
+		console.log(arr.myslice(1,2));
+
+
+		function demo(){
+			console.log(arguments);
+			console.log(Array.prototype.myslice.call(arguments));// =>arguments.myslice();  但是arguments是伪数组 并没有这个方法 所以只能通过call方法 改变里面的this指向 模拟是arguments调用myslice
+			arguments.__proto__ = Array.prototype;
+			console.log(arguments.myslice());
+		}
+		demo(1,2,3,4,5,6);
+
+
+	</script>
+</body>
+</html>

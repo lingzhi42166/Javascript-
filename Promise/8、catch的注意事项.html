@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+            有一个需求 就是如果Promise是resolve 就执行then 
+            如果是reject就执行catch  但是还是会执行then的里面的第一个参数的逻辑
+        
+        
+         */
+        new Promise(function(resolve,reject){
+            reject("error");
+            /* 
+                当一个Promise实例是拒绝状态 那么他的拒绝状态会一直冒泡 直到有catch捕捉到
+                其实就是直到有对应的回调函数执行 才会停止 并且错误信息 会被回调函数吸收 并且可以通过参数形式获取
+                内部原理就是Promise 的then方法 里面写了 如果没有传入第二个参数 那么就把这个实例返回出去 下一调用同样
+                直到有对应的回调函数执行了 才被吸收  然后就不会在浏览器中报错 否则就会在浏览器报错
+             */
+        }).then(function(){//没有传入rejected状态的回调函数 第一个回调函数也不会执行  直接原封不动的返回这个实例
+            console.log("console.log(1");
+        }).catch(function(value){//这次就是rejected状态的回调函数 执行 错误被吸收了
+            console.log(value);
+        })
+    
+        new Promise(function(resolve,reject){
+            reject("error");
+        }).catch(function(value){
+            /* 一般总是建议，Promise 对象后面要跟catch方法，这样可以处理 Promise 内部发生的错误。
+            catch方法返回的还是一个 Promise 对象(默认返回resolve状态的,除非这里内部报错 或者自己reutrn 一个rejected状态的Promise)，因此后面还可以接着调用then方法。 
+            如果Promise内部没有错误 那么就会跳过这里 
+
+            比如有一个功能 是如果promise内部错误了 那么额外需要作出一定处理 
+            但是还是要执行then的第一个回调函数里的逻辑 
+            如果没有错误 那么就正常执行then里第一个回调函数里的逻辑
+            就可以通过这种方式
+            */
+            console.log(value);
+        }).then(function(){//
+            console.log(1);
+        })
+    
+    
+    </script>
+</body>
+</html>

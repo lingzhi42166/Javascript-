@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+            学习正则表达式之前请记住这句话:
+                正则表达式是匹配模式,要么匹配字符,要么匹配位置。
+            首先学习两种模糊匹配:
+                横向模糊匹配:
+                    匹配的字符长度不确定,实现方式通过量词
+                    譬如:{1,6} 表示连续出现最少1次最多6次
+                纵向模糊匹配:
+                    匹配某一个具体字符,可以不是某个确认的字符,多种之一
+                    实现方式就是通过字符组
+                    譬如:[abc] 表示该字符可以是a或者b或者c其中一个
+                    /a[123]b/  可以匹配到 a1b a2b a3b
+
+            /1{2,3}2/g   g是一个修饰符 表示全局匹配。
+            在目标字符串中 按顺序找到满足匹配模式的所有子串！
+            注意是所有符合的子串都被提取
+            
+            总结:
+                匹配的字符长度不固定 通过量词{x,y}实现
+                匹配的字符是多字符其中之一 通过字符组[x,y,z...]实现
+        */
+        let regex = "112 1112 12";
+        console.log(regex.match(/1{2,3}2/g));
+
+    </script>
+</body>
+</html>

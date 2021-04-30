@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+            回调函数不是由该函数的实现方直接调用，
+            而是在特定的事件或条件发生时由另外的一方调用的，
+            用于对该事件或条件进行响应。
+
+
+
+            JS中的异步操作：
+                1、定时器都是异步操作
+                2、事件绑定都是异步操作
+                3、AJAX中一般我们都采取异步操作（也可以同步）
+                4、回调函数可以理解为异步（不是严谨的异步操作）
+         */
+        console.log(1);
+        setTimeout(function(){
+            console.log(2);
+        },0);
+        fn(fn2);
+        function fn(fn){
+            // fn();
+            setTimeout(function(){
+                fn();
+            },0)
+        };
+        function fn2(){
+            console.log(3);
+        }   
+        console.log(4); 
+    
+    </script>
+</body>
+</html>

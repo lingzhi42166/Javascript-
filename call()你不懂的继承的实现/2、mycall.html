@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/*
+			call 是基于函数  原型构建
+
+		*/
+		Function.prototype.mycall = function(t){
+			t = t || window;
+			t.fn = this;//因为是需要改变this指向的函数调用mycall方法 所以此时的this是调用该mycall函数的函数
+			// t.fn();
+			var args = [],result;
+			if(arguments[1]){
+				for(var i = 1; i<arguments.length; i++){
+					args.push(arguments[i]);
+				}
+			}
+			// console.log(args);
+			// console.log('t.fn(' + args +')');
+
+			// eval 执行传入的字符串 返回最后一个表达式的结果(比如函数return的值)  字符串拼接的时候 如果[] ()不在字符串内 都忽略掉了 只拿里面的值
+			result = eval('t.fn(' + args +')');
+			
+			delete t.fn//执行完就没用了 可以直接删除掉 //删除挂载在借用对象上的fn属性
+		}
+		function demo(){
+			this.color = "red";
+		}
+		function demo1(parameters){
+			console.log(this);
+			console.log(this.color);
+			console.log(parameters);
+		}
+		// demo1.call(demo);  this指向是一个对象  所以需要new
+		// demo1.call(new demo(),1);
+		demo1.mycall(new demo(),1);
+	</script>
+</body>
+</html>

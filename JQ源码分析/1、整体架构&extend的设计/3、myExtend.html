@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="myJquery.js"></script>
+	<script>
+		console.log($.extend(true,{x:1},{y:1}));
+		console.log($.extend(true,{x:{x:1}},{y:{y:2}}));
+		console.log($.extend(true,{x:{x:1}},{y:{y:2}},{z:1}));
+		console.log($.extend({x:1}));
+
+		console.dir($);
+
+		/* $.extend = {};
+		console.log($.extend({x:1})); */
+
+
+	</script>
+</body>
+</html>

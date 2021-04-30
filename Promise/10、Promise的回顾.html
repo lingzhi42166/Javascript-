@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 不管是then还是catch 默认返回的都是resolve状态的promise实例对象
+        // 不管是then还是catch 其回调函数返回值 如果是一个promise实例对象的话 那么就是then、catch返回的就是这个对象 否则其他的都是作为下一个状态回调函数的参数
+        // 不管是then还是catch 其参数要么是promise实例对象的状态的参数值 否则then的回调函数的参数就是前一个promise实例对象状态的回调函数的返回值 catch还是捕捉的是错误信息
+        // reject相当于是报错(自己抛出错误) 如果是通过throw等方式抛出错误 或者程序执行的错误 那么不需要调用reject也是rejected状态的 并且错误信息会自动作为参数传给回调函数
+        // Promise 对象的错误具有“冒泡”性质，会一直向后传递，直到被捕获为止。也就是说，错误总是会被下一个catch语句捕获。错误信息通过catch捕捉  就不会通过浏览器报错  值得注意的是 Promise内部错误 即使是通过浏览器报错 也不会影响到Promise外部的代码执行 
+
+        var promise = new Promise(function (resolve, reject) {
+            reject("reject");
+        }).catch(function (value) {
+            console.log(value);
+            return value
+        }).then(function (value) {
+            console.log(value);//上一个reject状态的回调函数返回的不是promise实例对象 所以其返回值是该回调函数的参数
+            return new Promise((resolve, reject) => { reject("回调函数的参数") });//返回的是一个promise实例对象 那么这个then返回的就是这个reject状态的promise实例对象
+        }).catch(value => {
+            console.log(value);
+        })
+        console.log(promise);
+
+
+    </script>
+</body>
+
+</html>

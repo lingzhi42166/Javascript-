@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /* 
+            每次调用then都会返回一个新创建的promise对象
+            不管是 then 还是 catch 方法调用，都返回了一个新的promise对象。
+            并且传给每个 then 方法的 value 的值都是前一个回调函数的 通过 return 返回的值。
+            
+         */
+        new Promise(function(resolve){
+            resolve(100);
+            // 让这个promise对象立即进入确定（即resolved）状态，并将 100 传递给后面then里所指定的 onFulfilled 函数 => 第一个参数的函数。
+        }).then(function(value){
+            console.log(value);
+            return value
+        }).then(function(value){
+            console.log(value);
+        })
+
+        var a = new Promise(function(resolve){
+            resolve(100);
+        })
+        a.then(function(value){
+            return value
+        }).then(function(value){
+            console.log(value);
+            return value
+        },function(value){
+            consol.log(value);
+        })
+        /* 
+            then 返回一个新的Promise对象 
+            但是其对象的[[PromiseStatus]] 
+            还是绑定着a这个Promise对象的resolve状态
+            并且这个then返回的这个新的Promise对象的[[PromiseValue]]值 为onFulfilled函数的返回值
+
+            所以then可以链式调用 并且下一个的then方法的onFulfilled函数的参数值 是上一个的onFulfilled函数的返回值
+            也就是Promise对象的[[PromiseValue]]属性的值
+        */
+        console.log(a);
+        console.log(a.then(function(value){
+            return value
+        }));
+
+        
+    </script>
+</body>
+</html>

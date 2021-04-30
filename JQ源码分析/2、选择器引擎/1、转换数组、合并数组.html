@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="myJquery.js"></script>
+    <script>
+        function test(){
+            console.log(jQuery.markArray(arguments));
+        }
+        test(1,2);
+        console.log(jQuery.merge([1,2],{0:2,1:2,2:3}))
+
+        console.log(jQuery.markArray("<div</div>",{x:1}));
+
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<script>
+		/*
+			call就是修改this的指向
+
+
+		*/
+
+		function add(a,b){
+			return a + b;
+			// console.log(a);
+		}	
+		function test(){
+			this.value = null;
+			this.num = function(){
+				console.log(this.value);
+			}
+		}
+		var t = new test();
+		// t.value = add(6,7);
+		t.value = add.call(t,6,7);
+		t.num();
+
+
+		function demo(){
+			// var a = 1;
+			this.a = 1;
+		}
+		function demo1(){
+			// console.log(a);a is no defined
+			console.log(this.a);
+		}
+		var d = new demo();
+		demo1.call(d);
+
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="myjQuery.js"></script>
+	<script>
+		/*
+			如果没有传入值 则直接返回实例对象
+
+			如果传入的是字符串类型:
+				$("div") $("<div>") $("#div")...
+
+				在里面在进行判断
+					1、如果字符串的成员是<>形式 并且长度至少为3  如<a>
+					不然<> 这种是无效的
+						true
+							match = [null,字符串的值,null]
+
+						false
+							把其他形式的通过正则表达式检索出来 
+							正则表达式有两个分组 也就是子表达式 
+							主要是把复杂的html片段或者是#id这种提取出来
+							match = rquickExpr.exec( selector );
+							/^(?:[^ # <]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/
+					
+						end
+
+						如果match有值
+							match[1]有值 就是创建DOM节点
+							不管是第一个判断还是第二个判断
+							match数组的第二个成员都是html代码 并且是创建DOM节点
+							更何况如果是<a> 第一个判断就已经截取了
+							所以我们这里直接判断match[1]有值那么就通过document.creatElement()创建这个节点
+							注意这时候的match[1]是带有<>的 需要通过正则将我们需要的文本提取出来
+							如果match[1]为undefined 那么match[2]肯定有值
+							因为在最上面的正则已经筛选过一次了 
+							那么match[2]就是通过id找到元素
+
+		*/
+	</script>
+</body>
+</html>

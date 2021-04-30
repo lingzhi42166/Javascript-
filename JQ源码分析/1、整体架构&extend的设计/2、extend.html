@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../jquery-3.3.1.js"></script>
+    <script>
+        /* 
+            extend: 
+                给一个对象扩展方法和属性的
+
+                1、给任意对象扩展
+                    $.extend({被扩展对象traget},{扩展对象});
+                2、给jq本身扩展(jq构造函数)
+                    $.extend({扩展对象})
+                3、给jq的实例对象扩展
+                    $.fn.extend({扩展对象})
+                    window.$ = window.jquery = jquery;
+                    jquery.fn = jquery.prototype
+                    所以$.fn == jquery.fn
+        */
+        console.log($.extend(123, "123", { y: 1 }));//可以看到 如果被扩展对象不是一个
+        console.log($.extend(123));
+        console.log($);
+
+        //第一个参数不是boolean 也不是对象的话 就会让第一个参数={}
+        console.log($.extend(123, { x: 1 }));
+        //如果扩展对象为空 也就是第三个参数为空 那么就不会进行拷贝的逻辑代码 
+        // 如果第一个参数是false 那么target就设置为一个空对象 deep默认就是false 所以不需要设置 也就是如果是false既不会深拷贝 也不会往jq自身添加
+        // 如果传入多个对象 那么内部的for循环还是会把后面的对象遍历到target的
+        console.log($.extend(false, { x: 1 },{ y: 1 }));
+        console.log($.extend(true, { x: 1 },{ y: 1 }));
+        // 如果第一个参数没值 也就是没有传入参数的话 就返回一个{} 
+        console.log($.extend());
+        console.dir($);
+
+
+        for (let key in "123") {//包装类 会在内部new String(123) 然后遍历的是这个字符串对象
+            console.log(key);
+        }
+        for (let key in 123) {//不会执行
+            console.log(key);
+            console.log(1);
+        }
+
+        /* $.extend = {};
+		console.log($.extend({x:1})); */
+
+    </script>
+</body>
+
+</html>

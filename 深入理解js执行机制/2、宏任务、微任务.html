@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /* 
+            首先整个script放入宏任务队列
+            碰到console.log(1)执行
+            看到setTimeout 放入宏任务的event queue 宏任务队列中
+            Promise执行 然后then 放入微任务的event queue 微任务队列中、
+            console.log(5)执行
+
+            第一个宏任务执行完毕 查看微任务队列 依次执行完毕
+                then在微任务队列中  执行 console.log("执行then的函数");
+                执行完所有微任务 开始新一轮的事件循环 也就是开始新的宏任务
+                渲染页面
+            开始第二次事件循环 从宏任务队列中提取 
+                setTimeout   执行console.log(2);
+                宏任务执行完 查看微任务队列  无  
+                渲染页面
+                开始新的宏任务 如果没有 则结束
+
+
+            总结:
+                1、宏任务按顺序执行，且浏览器在每个宏任务之间渲染页面
+                所有微任务也按顺序执行，且在以下场景会立即执行所有微任务
+                    - 每个回调之后且js执行栈中为空。
+                    - 每个宏任务结束后。
+
+                2、执行一个宏任务  
+                    执行过程中如果遇到微任务 就放到微任务的(event queue) 微任务队列中  如果遇到定时器 就放到宏任务的(event queue) 宏任务队列
+                    当第一个宏任务执行完成后  就看微任务队列 有就依次执行完微任务队列 
+                    没有就表示当前宏任务执行完毕,开始检查渲染,然后GUI线程接管渲染 
+                    渲染完毕后 JS线程继续接管开始下一个宏任务
+                    此时从宏任务队列中提取执行 
+                    然后就是一个循环 直到全部结束
+
+                可以发现每一次事件循环结束 才会渲染画面 
+
+                宏任务:task
+                浏览器为了能够使得JS内部task与DOM任务能够有序的执行，会在一个task执行结束后，在下一个 task 执行开始前，对页面进行重新渲染 （task->渲染->task->...）
+                鼠标点击会触发一个事件回调，需要执行一个宏任务，然后解析HTMl
+                        
+        
+        */
+        console.log(1);
+        setTimeout(function () {
+            console.log(2);
+        }, 0);
+        
+        new Promise(function (resolve) {
+            console.log("马上执行");
+            for (var i = 0; i < 10000; i++) {
+                i == 99 && resolve();
+            };
+        }).then(function () {
+            console.log("执行then的函数");
+        }).then(function(){
+            console.log("再次执行then函数");
+        });
+
+        console.log(5);
+    </script>
+</body>
+
+</html>

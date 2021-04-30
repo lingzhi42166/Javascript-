@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>（(
+<script type="text/javascript">
+    console.log(1);
+
+//    进入event table 注册console.log 事件
+//    当0毫秒后 放入event queue 事件队列 也叫任务队列 等待执行栈空了以后 从任务队列读取 执行
+    setTimeout(function(){
+        console.log(2);
+    },0);
+//    进入event table 注册console.log 事件
+    setTimeout(function(){
+        console.log(3);
+    },300);
+
+    console.log(4);
+    console.log(5);
+    console.log(6);
+//  同步  在执行栈 也就是js引擎中执行  因为10000太多 消耗的时间也多 所以即使上面定时器注册完事件 并且达到了执行条件 放入了任务队列  也需要等执行栈空了 以后 才会去任务队列查看时候有任务需要执行
+//  同样 从任务队列中取任务 也是一次取一个  先进先出 先进任务队列的先出任务队列
+    // for(var i = 0; i<100000; i++){
+    //     console.log("循环");
+    // }
+</script>
+</body>
+</html>

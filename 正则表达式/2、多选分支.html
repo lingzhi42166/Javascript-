@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*  
+            多选分支就是多个字模式任选其一:
+                (p1|p2|p3)其中p1 p2 p3就是子模式
+                用|(管道符)分隔,表示其中任意之一
+
+                回溯具体看正则迷你书吧 我现在还是不太弄明白
+
+
+
+                正则匹配的过程:
+                    good idea,nice try
+                    /good|nice/g
+                    这个是自己一开始的理解 但是看博客上不是这样的 在此下面写一下博客的回溯
+                    /* 第一步 匹配 /g/或者/n/ 得到g
+                    第二步 匹配 /o/或者/i/ 得到o
+                    第三步 匹配 /o/或者/c/ 得到o
+                    第四步 匹配 /d/或者/e/ 得到d
+                    /good/匹配完成 得到good
+                    因为有修饰符g 所以继续匹配
+                    匹配 /g/或者/n/ 因为good后面是 空格 所以匹配失败 回溯
+                    回溯到 匹配/g/或者/n/ 因为是i 匹配失败进行回溯 
+                    回溯到 匹配/g/或者/n/ 因为是d 匹配失败进行回溯
+                    回溯到 匹配/g/或者/n/ ...依次类推 (下一次就到到n了呀)
+                    回溯到 匹配/g/或者/n/ 得到n
+                    匹配 /o/或者/i/ 得到i
+                    匹配 /o/或者/c/ 得到c
+                    匹配 /d/或者/e/ 得到e
+                    正则表达式匹配完成 得到nice  注意是正则表达式匹配完成 不是字符串没了
+                    返回一个数组  ["good", "nice"]
+
+                    // 高性能javascript
+                    匹配/good/ 得到good
+                    因为有修饰符g 全局匹配 所以继续匹配后面的字符串
+                    匹配/good/ 因为其后面是空格所以匹配失败 进行回溯到最近的决策点 最近决策点是匹配/good/  所以等于是回到分支结构上 尝试匹配第二个分支
+                    匹配/nice/ 因为其后面是空格所以匹配失败 也没有更多可选项去匹配了 所以认为从这个字符开始匹配是不能成功的 所以从下一个开始匹配
+                    匹配/good/ 匹配失败 回溯到分支结构上 并且尝试第二个分支 还是匹配失败 无更多可选项去匹配 从下一个字符开始匹配
+                    匹配/good/ 匹配失败 回溯到分支结构上 并尝试第二个分支 还是匹配失败 无更多可选项去匹配 从下一个字符开始匹配
+                    以此类推  当到第11个字符的时候 匹配/good/ 匹配失败 回溯到分支结构上然后进行匹配第二个分支
+                    匹配/nice/ 匹配上了  得到nice
+                    正则表达式匹配完成
+                    ["good", "nice"]
+
+        */
+        let str = "good idea,nice try";
+        console.log(str.match(/good|nice/g));//因为是全局匹配 按顺序把符合匹配模式的子串都提取了
+
+        let str2 = "goodbye";
+        console.log(str2.match(/good|goodbye/g));
+        /* 
+          匹配/good/ 匹配成功 得到good
+          因为有修饰符g 所以进行全局匹配 继续匹配good后面的字符 也就是d的后面
+          匹配/good/ 匹配失败 回溯到分支结构上  尝试匹配第二个分支 还是匹配失败 认为从这个字符匹配是不能成功的 从下一个字符开始匹配
+          一次类推  到最后也无法匹配上 结束
+          得到good
+
+        
+        */
+        
+        let str3 = "goodbye";
+        console.log(str3.match(/goodbye|good/g));
+
+        let str4 = "goodbye good";
+        console.log(str4.match(/goodbye|good/g));
+        /* 
+            匹配/goodbye/ 匹配成功 得到goodbye
+            因为有修饰符g 所以进行全局匹配
+            继续匹配e后面的字符 
+            匹配/good/ 匹配失败 回溯到e后面 并匹配第二个分支 还是匹配失败 后面没有可选项去匹配了 所以从下一个字符重新尝试
+            匹配/good/匹配成功 得到good 
+            目标字符串也没有了 匹配结束
+            得到["goodbye", "good"]
+        
+        */
+
+        let str5 = "goodbye";
+        console.log(str3.match(/o|good/g))
+    
+    </script>
+</body>
+</html>

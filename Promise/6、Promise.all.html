@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/*
+			再次理解Promise
+				Promise的回调函数 就是Promise两种状态有着对应的回调函数
+				如果Promise的状态是resolve 那么Promise的回调函数就是then(onFulfilled) 的onFulfilled函数 也就是then方法的第一个参数
+
+				
+			Promise.all([p1,p2...])
+				将多个Promise实例包装成一个新的Prmomise实例
+				
+				例子: var p = Promise([p1,p2,p3])
+
+					1、 只有当p1 p2 p3 的状态都是resolve的时候,p1 p2 p3的返回值组成一个数组传递给P的回调函数
+					也就是只有当p1~p3都是resolve状态时
+					p这个实例的:
+						[[PromiseStatus]]: "rsolve"
+						[[PromiseValue]]: p1 p2 p3的返回值组成的一个数组
+					否则就是默认的:
+						[[PromiseStatus]]: "pending"
+						[[PromiseValue]]: undefined
+					
+					2、只要p1~p3其中一个是rejected 那么p的状态就是rejected 并且第一个rejected的返回值 传递给p的回调函数
+					[[PromiseValue]]: 第一个rejected的返回值
+
+					3、只有当p1~p3的状态都为resolve 或者 其中一个rejected 才会调用Promise.all后面的回调函数。
+					注意:如果p1~p3实例自己定义了catch回调函数 那么reject的时候 是被自己的catch捕捉 而不会调用Promise.all的catch回调函数
+					但是如果p1~p3自己没有定义catch回调函数,那么一旦reject的时候
+					就会触发Promise.all的catch回调 
+
+		*/
+		var a = new Promise(function(resolve,reject){
+			resolve("a");
+			console.log("a");
+		})
+		var b = new Promise(function(resolve,reject){
+			// resolve("b");
+			reject("error");
+			// return 1
+			console.log("b");
+		}).catch(function(value){//如果作为参数的Promise实例 自己定义了catch方法 那么一旦rejected 就会调用自己的catch的回调函数 而不会触发Promise.all方法的catch。但是如果作为参数的实例 reject 同时自己并没有catch方法  那么就会触发到Promise.all方法的catch 
+			console.log(value);
+		})
+		var c = new Promise(function(resolve,reject){
+			// resolve("c");
+			// reject("c");
+			console.log("c");
+		})
+		var p = Promise.all([a,b,c]);
+		console.log(p);
+		Promise.all([a,b,c]).then(function(value){
+			console.log('then');
+		}).catch(function(value){
+			console.log(value)
+		})
+
+
+        new Promise(function (resolve,reject) {
+            reject(1);
+        }).then(function(){
+            console.log("then");
+        }).catch(function(value){
+            console.log(value);
+        })
+		new Promise(function (resolve,reject) {
+            resolve();
+			setTimeout(function(){
+                throw new Error("test");
+			},0)
+        }).then(function(){
+            console.log("then");
+		}).catch(function(value){
+		    console.log(value);
+		})
+	</script>
+</body>
+</html>
